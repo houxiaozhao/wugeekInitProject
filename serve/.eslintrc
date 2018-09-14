@@ -1,0 +1,7 @@
+{
+  "extends": "think",
+  "rules": {
+    "no-console": "off",
+    "space-before-function-paren": "off"
+  }
+}
