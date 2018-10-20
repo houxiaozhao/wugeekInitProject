@@ -1,5 +1,7 @@
 const Base = require('./../base');
 const jwt = require('jwt-simple');
+const Sha256 = require('crypto-js/hmac-sha256');
+const rand = require('csprng');
 
 module.exports = class extends Base {
   async loginAction() {
@@ -10,9 +12,7 @@ module.exports = class extends Base {
     }
     // 获取用户，然后判断密码
     const userTmp = await this.mongo('v1/user').getUserByName(loginUser.username);
-    console.log(userTmp);
-    console.log(think.md5(loginUser.password));
-    if (think.isEmpty(userTmp) || userTmp.password !== think.md5(loginUser.password)) {
+    if (think.isEmpty(userTmp) || userTmp.password !== Sha256(loginUser.password + userTmp.salt, think.config('secret')).toString()) {
       this.fail(400, '登陆失败,用户名或密码错误');
       return false;
     }
@@ -53,10 +53,11 @@ module.exports = class extends Base {
     const oldPassword = this.post('oldPassword');
     const user = await this.mongo('v1/user').getUserByID(this.ctx.state.userid);
     // 判断旧密码是否正确
-    if (think.isEmpty(user) || user.password !== think.md5(oldPassword)) {
+    if (think.isEmpty(user) || user.password !== Sha256(oldPassword + user.salt, think.config('secret')).toString()) {
       this.fail(400, '修改失败');
       return false;
     }
-    this.success(await this.mongo('v1/user').editUser(this.ctx.state.userid, { password: think.md5(newPassword) }));
+    const salt = rand(256, 36);
+    this.success(await this.mongo('v1/user').editUser(this.ctx.state.userid, { password: Sha256(newPassword + salt, think.config('secret')).toString(), salt: salt }));
   }
 };

@@ -1,9 +1,14 @@
 const ObjectID = require('mongodb-core').BSON.ObjectID;
+const Sha256 = require('crypto-js/hmac-sha256');
+const rand = require('csprng');
+
 module.exports = class extends think.Mongo {
   addUser(user) {
+    const salt = rand(256, 36);
     return this.model('user').add({
       username: user.username,
-      password: think.md5(user.password),
+      password: Sha256(user.password + salt, think.config('secret')).toString(),
+      salt: salt,
       phone: user.phone,
       email: user.email,
       role: 'user'

@@ -11,7 +11,7 @@ module.exports = {
       port: 27017,
       user: '',
       password: '',
-      database: 'PM2'
+      database: 'wugeek'
     }
   },
   mqttconfig: {
@@ -31,5 +31,5 @@ module.exports = {
   },
   mqttTopic: {},
   // 允许不需要token就可以直接访问的接口，
-  allowUrls: ['v1/mote/checkMote']
+  allowUrls: ['/v1/auth/signup', '/v1/auth/login', 'v1/mote/checkMote']
 };
