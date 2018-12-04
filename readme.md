@@ -1,3 +1,5 @@
+http://www.wugeek.com/
+
 ### 前端
 
 > 前端项目基于 D2Admin 做了一点修改使其适用于 wugeek 团队项目开发
@@ -11,22 +13,23 @@ yarn
 yarn serve
 ```
 
-
-
 ### 后端
 
 > 后端项目框架基于 thinkjs
 
 - 用户管理
-- token实现
+- token 实现
 - wamp
 - mqtt
 - redis
-- mongo支持
+- mongo 支持
 - cors 跨域
 
 ```bash
-yarn 
+yarn
 npm start
 ```
 
+### element-admin 前端
+
+### egg.js 后台
