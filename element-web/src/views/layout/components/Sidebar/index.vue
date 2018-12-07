@@ -1,5 +1,6 @@
 <template>
   <el-scrollbar wrap-class="scrollbar-wrapper">
+    <logo :is-collapse="isCollapse"/>
     <el-menu
       :show-timeout="200"
       :default-active="$route.path"
@@ -9,7 +10,12 @@
       text-color="#bfcbd9"
       active-text-color="#409EFF"
     >
-      <sidebar-item v-for="route in routes" :key="route.path" :item="route" :base-path="route.path"/>
+      <sidebar-item
+        v-for="route in routes"
+        :key="route.path"
+        :item="route"
+        :base-path="route.path"
+      />
     </el-menu>
   </el-scrollbar>
 </template>
@@ -17,13 +23,12 @@
 <script>
 import { mapGetters } from 'vuex';
 import SidebarItem from './SidebarItem';
+import logo from './logo';
 
 export default {
-  components: { SidebarItem },
+  components: { SidebarItem, logo },
   computed: {
-    ...mapGetters([
-      'sidebar'
-    ]),
+    ...mapGetters(['sidebar']),
     routes() {
       return this.$router.options.routes;
     },
